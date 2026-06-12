@@ -71,6 +71,49 @@ h1 {
   cursor: pointer;
   transform-style: preserve-3d;
   transition: transform 0.5s;
+  opacity: 0;
+}
+
+.card.deal-in {
+  opacity: 1;
+  animation: dealIn 0.5s ease-out forwards;
+}
+
+@keyframes dealIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-200px) rotate(-180deg) scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(10px) rotate(10deg) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+.card.shuffle-fly {
+  animation: shuffleFly 0.8s ease-in-out;
+}
+
+@keyframes shuffleFly {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-80px) rotate(-15deg);
+  }
+  50% {
+    transform: translateY(-120px) rotate(0deg) scale(1.1);
+  }
+  75% {
+    transform: translateY(-80px) rotate(15deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
 }
 
 .card.flipped {
@@ -284,4 +327,55 @@ h1 {
     flex-direction: column;
     gap: 10px;
   }
+}
+
+.error-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: slideDown 0.3s ease-out;
+  max-width: 90%;
+  text-align: center;
+}
+
+.error-toast::before {
+  content: '⚠️';
+  font-size: 1.2em;
+}
+
+.error-toast.hidden {
+  display: none;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.game-board.animating .card {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
 }
