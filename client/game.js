@@ -1,14 +1,14 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+﻿const API_BASE_URL = 'http://localhost:6054/api';
 
 const CARD_EMOJIS = {
-  1: '🐶',
-  2: '🐱',
-  3: '🐼',
-  4: '🦊',
-  5: '🦁',
-  6: '🐸',
-  7: '🐵',
-  8: '🐨'
+  1: '馃惗',
+  2: '馃惐',
+  3: '馃惣',
+  4: '馃',
+  5: '馃',
+  6: '馃惛',
+  7: '馃惖',
+  8: '馃惃'
 };
 
 const gameBoard = document.getElementById('gameBoard');
@@ -69,7 +69,7 @@ async function fetchShuffledCards() {
     const data = await response.json();
     return data.cards;
   } catch (error) {
-    console.error('获取洗牌数据失败:', error);
+    console.error('鑾峰彇娲楃墝鏁版嵁澶辫触:', error);
     const fallbackCards = [];
     for (let i = 1; i <= 8; i++) {
       fallbackCards.push(i, i);
@@ -94,7 +94,7 @@ function renderCards(cardIds) {
     
     const cardFront = document.createElement('div');
     cardFront.className = 'card-face card-front';
-    cardFront.textContent = CARD_EMOJIS[cardId] || '❓';
+    cardFront.textContent = CARD_EMOJIS[cardId] || '鉂?;
     
     card.appendChild(cardBack);
     card.appendChild(cardFront);
@@ -193,7 +193,7 @@ function endGame() {
 }
 
 async function submitScore() {
-  const playerName = playerNameInput.value.trim() || '匿名玩家';
+  const playerName = playerNameInput.value.trim() || '鍖垮悕鐜╁';
   const timeInSeconds = Math.floor(elapsedTime / 1000);
 
   try {
@@ -211,13 +211,13 @@ async function submitScore() {
     const data = await response.json();
     
     if (data.success) {
-      alert(`恭喜！你排名第 ${data.rank} 名！`);
+      alert(`鎭枩锛佷綘鎺掑悕绗?${data.rank} 鍚嶏紒`);
       winModal.classList.add('hidden');
       showLeaderboard();
     }
   } catch (error) {
-    console.error('提交成绩失败:', error);
-    alert('提交成绩失败，请稍后重试');
+    console.error('鎻愪氦鎴愮哗澶辫触:', error);
+    alert('鎻愪氦鎴愮哗澶辫触锛岃绋嶅悗閲嶈瘯');
   }
 }
 
@@ -227,8 +227,8 @@ async function showLeaderboard() {
     const data = await response.json();
     renderLeaderboard(data.leaderboard);
   } catch (error) {
-    console.error('获取排行榜失败:', error);
-    leaderboardList.innerHTML = '<li>加载排行榜失败</li>';
+    console.error('鑾峰彇鎺掕姒滃け璐?', error);
+    leaderboardList.innerHTML = '<li>鍔犺浇鎺掕姒滃け璐?/li>';
   }
   
   leaderboardModal.classList.remove('hidden');
@@ -236,7 +236,7 @@ async function showLeaderboard() {
 
 function renderLeaderboard(leaderboard) {
   if (!leaderboard || leaderboard.length === 0) {
-    leaderboardList.innerHTML = '<li class="empty-message">暂无记录，快来挑战吧！</li>';
+    leaderboardList.innerHTML = '<li class="empty-message">鏆傛棤璁板綍锛屽揩鏉ユ寫鎴樺惂锛?/li>';
     return;
   }
 
