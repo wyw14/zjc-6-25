@@ -71,7 +71,14 @@ h1 {
   cursor: pointer;
   transform-style: preserve-3d;
   transition: transform 0.5s;
+  opacity: 1;
+}
+
+.card.pre-deal-hide {
   opacity: 0;
+  transform: none;
+  animation: none;
+  transition: opacity 0.15s;
 }
 
 .card.deal-in {
@@ -95,23 +102,29 @@ h1 {
 }
 
 .card.shuffle-fly {
+  opacity: 1;
   animation: shuffleFly 0.8s ease-in-out;
 }
 
 @keyframes shuffleFly {
   0% {
+    opacity: 1;
     transform: translateY(0) rotate(0deg);
   }
   25% {
+    opacity: 1;
     transform: translateY(-80px) rotate(-15deg);
   }
   50% {
+    opacity: 1;
     transform: translateY(-120px) rotate(0deg) scale(1.1);
   }
   75% {
+    opacity: 1;
     transform: translateY(-80px) rotate(15deg);
   }
   100% {
+    opacity: 1;
     transform: translateY(0) rotate(0deg);
   }
 }

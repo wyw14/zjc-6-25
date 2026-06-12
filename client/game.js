@@ -137,7 +137,9 @@ function renderCards(cardIds) {
 function playShuffleAnimation() {
   return new Promise((resolve) => {
     const totalCards = cards.length;
+    const shuffleStagger = 40;
     const shuffleDuration = 800;
+    const hideDelay = 200;
     const dealInterval = 80;
     
     let completedCount = 0;
@@ -149,32 +151,50 @@ function playShuffleAnimation() {
         const card = cards[cardIndex];
         if (card) {
           card.classList.add('shuffle-fly');
+          
+          const onShuffleEnd = () => {
+            card.removeEventListener('animationend', onShuffleEnd);
+            card.classList.remove('shuffle-fly');
+          };
+          card.addEventListener('animationend', onShuffleEnd);
         }
-      }, order * 40);
+      }, order * shuffleStagger);
       shuffleTimeouts.push(t1);
     });
     
+    const allShuffleEndTime = (totalCards - 1) * shuffleStagger + shuffleDuration;
+    
+    const t2 = setTimeout(() => {
+      cards.forEach(card => {
+        card.classList.add('pre-deal-hide');
+      });
+    }, allShuffleEndTime + hideDelay);
+    shuffleTimeouts.push(t2);
+    
+    const dealStartTime = allShuffleEndTime + hideDelay + 200;
+    
     cards.forEach((card, index) => {
-      const t2 = setTimeout(() => {
+      const t3 = setTimeout(() => {
+        card.classList.remove('pre-deal-hide');
         card.classList.add('deal-in');
         
-        const onAnimationEnd = () => {
-          card.removeEventListener('animationend', onAnimationEnd);
+        const onDealEnd = () => {
+          card.removeEventListener('animationend', onDealEnd);
           completedCount++;
           if (completedCount === totalCards) {
             resolve();
           }
         };
-        card.addEventListener('animationend', onAnimationEnd);
-      }, shuffleDuration + index * dealInterval);
-      shuffleTimeouts.push(t2);
+        card.addEventListener('animationend', onDealEnd);
+      }, dealStartTime + index * dealInterval);
+      shuffleTimeouts.push(t3);
     });
     
-    const maxWait = shuffleDuration + (totalCards * dealInterval) + 1000;
-    const t3 = setTimeout(() => {
+    const maxWait = dealStartTime + (totalCards * dealInterval) + 1000;
+    const t4 = setTimeout(() => {
       resolve();
     }, maxWait);
-    shuffleTimeouts.push(t3);
+    shuffleTimeouts.push(t4);
   });
 }
 
@@ -183,6 +203,7 @@ function stopShuffleAnimation() {
   gameBoard.classList.remove('animating');
   cards.forEach(card => {
     card.classList.remove('shuffle-fly');
+    card.classList.remove('pre-deal-hide');
     card.classList.add('deal-in');
     card.style.opacity = '1';
   });
